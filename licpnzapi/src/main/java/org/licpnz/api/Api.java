@@ -100,13 +100,6 @@ public class Api {
                 try {
                     dcr.onReceive(new byte[]{},0);
                     BufferedInputStream is = new BufferedInputStream(request(url));
-                    /*while (is.available()>0){
-                        byte[] b = new byte[is.read()];
-                        is.read(b);
-                        dcr.onReceive(b,1);
-                    }*/
-                    //Scanner s = new Scanner(is);
-
                     out.println("request started");
                     out.println("request opened");
                     byte[] buffer = new byte[2048];
@@ -115,18 +108,7 @@ public class Api {
                         if (r<0) break;
                         dcr.onReceive(buffer,1);
                     }
-                   /* while (s.hasNext()) {
-                        //byte[] b = new byte[is.available()];
-                        byte[] b = (s.nextLine()+"\n").getBytes();
-                        //is.read(b);
-                        //s.nextLine().getBytes();
-                        //err.println("read from request " + b.length + " bytes");
-                        dcr.onReceive(b,1);
-                        //s.next();
-                    }*/
                     out.println("request finishing");
-                    //while (is.available()==0){}
-                   // is.read(b);
                     dcr.onReceive(new byte[]{},2);
                     is.close();
                     out.println("request finished");
@@ -170,4 +152,8 @@ public class Api {
             return mTrustedKey;
         }
     }
+
+    public static int ERROR_UNKNOWN = 0;
+    public static int ERROR_CONNECTION_TIMEOUT = 1;
+    public static int ERROR_HOST_UNREACHABLE = 2;
 }

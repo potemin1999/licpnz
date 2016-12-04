@@ -34,6 +34,10 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> implements NewsApi.AsyncNewsReceiver {
 
+    public interface Callback{
+        public void onError(int err);
+    }
+
     private final Context mContext;
     private final List<New> mList;
     private final NewsApi mNewsApi;
@@ -52,7 +56,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
     private Handler h;
 
 
-    public NewsAdapter(Context c){
+    public NewsAdapter(Context c,Callback callback){
         super();
         mContext = c;
         mList = new ArrayList<New>();
@@ -71,8 +75,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
         lastLoadedPage++;
     }
 
-    public void requestNews(int page){
-        mNewsApi.getNewsAsync(0+page,1,this,page+1);
+    public void requestNews(int page) {
+        mNewsApi.getNewsAsync(0+page,1,this,page+1,false);
     }
 
     public void insertNews(New[] news){

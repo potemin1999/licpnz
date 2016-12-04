@@ -31,11 +31,12 @@ public class NewsApi extends Api.ApiMember{
         if (tk!=getTrustedKey()) throw new Api.InvalidKeyException("failed news stop verification");
     }
 
-    public void getNewsAsync(final long offset,final long count,final AsyncNewsReceiver anr,final int requestId){
+    public void getNewsAsync(final long offset,final long count,final AsyncNewsReceiver anr,final int requestId,final boolean safemode){
         Thread receiver = Thread.currentThread();
         new Thread(){
             public void run(){
-                New[] n = getNews(offset,count);
+                New[] n = getNews(offset,count,0,safemode);
+                if (n==null&&safemode) return;
                 synchronized (anr){
                     anr.onReceiveNews(n,requestId);
                 }
@@ -43,14 +44,20 @@ public class NewsApi extends Api.ApiMember{
         }.start();
     }
 
-    public New[] getNews(long offset,long count){
+
+
+    public New[] getNews(long offset,long count) {
         return getNews(offset,count,0);
     }
 
     public New[] getNews(long offset,long count,int version){
+        return getNews(offset,count,0);
+    }
+
+    public New[] getNews(long offset,long count,int version,boolean safemode){
         for (int i = 0;i<count;i++){
             InputStream is = Api.request(Api.getHost()+"api/news.get.php?p="+offset);
-            if (is==null) throw new NullPointerException("is null");
+            if (is==null) return null;
             Scanner s = new Scanner(is);
             StringBuffer sb = new StringBuffer();
             while (s.hasNext())

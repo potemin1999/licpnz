@@ -17,7 +17,7 @@ import org.licpnz.ui.adapter.NewsAdapter;
  * Created by Ilya on 17.11.2016.
  */
 
-public class NewsListFragment extends Fragment {
+public class NewsListFragment extends Fragment implements NewsAdapter.Callback {
 
     public ViewGroup mContainer;
     public RecyclerView mRecyclerView;
@@ -26,9 +26,14 @@ public class NewsListFragment extends Fragment {
     public RecyclerView.ItemAnimator mListItemAnimator;
 
     @Override
+    public void onError(int err) {
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new NewsAdapter(getActivity());
+        mListAdapter = new NewsAdapter(getActivity(),this);
         mListLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         mListItemAnimator = new DefaultItemAnimator();
         mContainer = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.news_list_fragment_layout,null);
