@@ -15,7 +15,8 @@ public class MainActivity extends Activity {
 
 
     public NewsListFragment mNewsListFragment;
-    public String mNewsListFragmentTag = "NewsListFragment";
+    public static final String mNewsListFragmentTag = "NewsListFragment";
+    public static final String mNewsDetailsFragmentTag = "NewsDetailsFragment";
     public FrameLayout mFragmentContainer;
 
     @Override

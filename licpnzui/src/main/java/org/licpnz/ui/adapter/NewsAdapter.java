@@ -66,6 +66,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
         return null;
     }
 
+    public NewsHolder findHolderByNew(New n){
+        for (int i = 0;i<mList.size();i++){
+            if (mList.get(i).mObjects.containsKey("holder"))
+                if (n==mList.get(i).mObjects.get("holder"))
+                    return (NewsHolder) mList.get(i).mObjects.get("holder");
+        }
+        return null;
+    }
+
 
     public final String[][] mRegex = {
             {"&laquo;","\""},//"«"},
@@ -184,15 +193,22 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
         public NewsHolder(Context c){
             super(new FrameLayout(c));
             mContainer = (FrameLayout) itemView;
-            mContainer.setOnClickListener(NewsAdapter.this);
             mContainer.setLayoutParams(new RecyclerView.LayoutParams(-1,-2));
             mInflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
             mNewLayout = (LinearLayout) mInflater.inflate(R.layout.new_layout,null);
+            mNewLayout.setClickable(true);
+            mNewLayout.setFocusable(true);
+            mNewLayout.setEnabled(true);
+            mNewLayout.setOnClickListener(NewsAdapter.this);
             mTitleTextView = (TextView) mNewLayout.findViewById(R.id.new_title_textview);
             mContentTextView = (TextView) mNewLayout.findViewById(R.id.new_content_textview);
             mIdTextView = (TextView) mNewLayout.findViewById(R.id.new_debug_id_textview);
             mPreviewSrcTextView = (TextView) mNewLayout.findViewById(R.id.new_debug_previewsrc_textview);
             mImageView = (PreviewImage)  mNewLayout.findViewById(R.id.new_src_imageview);
+
+            //mImageView.setOnClickListener(NewsAdapter.this);
+           // mContentTextView.setOnClickListener(NewsAdapter.this);
+           // mTitleTextView.setOnClickListener(NewsAdapter.this);
             mContainer.addView(mNewLayout,-1,-1);
         }
 
@@ -235,6 +251,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
 
         public void setNew(New n) {
             mNew = n;
+            mNew.mObjects.put("holder",this);
+            mNewLayout.setId(mNew.mID);
+           // mTitleTextView.setId(mNew.mID);
+           // mContentTextView.setId(mNew.mID);
+           // mImageView.setId(mNew.mID);
             mTitleTextView.setText(n.mT.mText);
             mIdTextView.setText(""+n.mID);
             if (n.mM.mText.equalsIgnoreCase(""))

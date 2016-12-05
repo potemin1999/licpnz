@@ -34,7 +34,8 @@ public class NewsListFragment extends Fragment implements NewsAdapter.Callback {
 
     @Override
     public void onNewAction(New n, int action) {
-        Toast.makeText(getActivity(), ""+n.mID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "new clicked " + n.mID , Toast.LENGTH_SHORT).show();
+        NewFragment.newInstance(this,n,mListAdapter.findHolderByNew(n));
     }
 
     @Override

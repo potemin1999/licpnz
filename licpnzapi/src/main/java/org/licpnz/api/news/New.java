@@ -1,12 +1,13 @@
 package org.licpnz.api.news;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by Ilya on 05.11.2016.
  */
 
-public final class New {
+public final class New implements Serializable {
 
     public Title mT;
     public Message mM;

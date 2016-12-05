@@ -17,7 +17,7 @@
                 android:transitionName="@string/new_title_transition_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView"
+                android:id="@+id/new_detailed_title_text_view"
                 android:textSize="24sp" />
 
             <ViewFlipper
