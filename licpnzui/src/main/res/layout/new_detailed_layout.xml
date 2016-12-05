@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:text="TextView"
+                android:transitionName="@string/new_title_transition_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:textSize="24sp" />
+
+            <ViewFlipper
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/new_image_flipper_height"/>
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:transitionName="@string/new_content_transition_name"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_detailed_content_text_view" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

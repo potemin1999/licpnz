@@ -9,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.licpnz.R;
+import org.licpnz.api.news.New;
 import org.licpnz.ui.adapter.NewsAdapter;
 
 /**
@@ -28,6 +30,11 @@ public class NewsListFragment extends Fragment implements NewsAdapter.Callback {
     @Override
     public void onError(int err) {
 
+    }
+
+    @Override
+    public void onNewAction(New n, int action) {
+        Toast.makeText(getActivity(), ""+n.mID, Toast.LENGTH_SHORT).show();
     }
 
     @Override

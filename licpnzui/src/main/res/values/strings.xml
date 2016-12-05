@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Licpnzui</string>
+    <string name="new_title_transition_name">new_title_transition_name</string>
+    <string name="new_content_transition_name">new_content_transition_name</string>
 </resources>

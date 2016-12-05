@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.licpnz.api.Api;
 import org.licpnz.api.news.New;
 import org.licpnz.api.news.NewsApi;
 import org.licpnz.ui.R;
@@ -32,17 +33,39 @@ import java.util.List;
  * Created by Ilya on 20.11.2016.
  */
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> implements NewsApi.AsyncNewsReceiver {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> implements NewsApi.AsyncNewsReceiver,View.OnClickListener {
 
     public interface Callback{
         public void onError(int err);
+        public void onNewAction(New n,int action);
+    }
+
+    public static final int ACTION_REQUEST_SHOW_DETAILS=4;
+
+    @Override
+    public void onClick(View v) {
+        New n = findNewById(v.getId());
+        if (n!=null){
+            mCallback.onNewAction(n,ACTION_REQUEST_SHOW_DETAILS);
+        }else{
+            Api.out.println("action click for null New");
+        }
     }
 
     private final Context mContext;
     private final List<New> mList;
     private final NewsApi mNewsApi;
+    private final Callback mCallback;
     private int lastLoadingPosition=-2;
     private int lastLoadedPage=0;
+
+    public final New findNewById(int id){
+        for (int i = 0;i<mList.size();i++){
+            if (id==mList.get(i).mID) return mList.get(i);
+        }
+        return null;
+    }
+
 
     public final String[][] mRegex = {
             {"&laquo;","\""},//"«"},
@@ -59,6 +82,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
     public NewsAdapter(Context c,Callback callback){
         super();
         mContext = c;
+        mCallback = callback;
         mList = new ArrayList<New>();
         mNewsApi = Ui.getApi().getNewsApi();
         h = new Handler(){
@@ -144,7 +168,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
 
 
 
-    public static class NewsHolder extends RecyclerView.ViewHolder{
+    public class NewsHolder extends RecyclerView.ViewHolder{
 
         final FrameLayout mContainer;
         final LinearLayout mNewLayout;
@@ -160,6 +184,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
         public NewsHolder(Context c){
             super(new FrameLayout(c));
             mContainer = (FrameLayout) itemView;
+            mContainer.setOnClickListener(NewsAdapter.this);
             mContainer.setLayoutParams(new RecyclerView.LayoutParams(-1,-2));
             mInflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
             mNewLayout = (LinearLayout) mInflater.inflate(R.layout.new_layout,null);
@@ -254,17 +279,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
             public void draw(Canvas canvas) {
                 canvas.drawColor(color);
             }
-
             @Override
-            public void setAlpha(int alpha) {
-
-            }
-
+            public void setAlpha(int alpha) {}
             @Override
-            public void setColorFilter(ColorFilter colorFilter) {
-
-            }
-
+            public void setColorFilter(ColorFilter colorFilter) {}
             @Override
             public int getOpacity() {
                 return PixelFormat.OPAQUE;
