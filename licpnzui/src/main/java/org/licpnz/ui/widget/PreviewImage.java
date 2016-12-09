@@ -17,7 +17,7 @@ public class PreviewImage extends ImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //super.onMeasure(widthMeasureSpec,500);
+        //super.onMeasure(widthMeasureSpec,100);
         //if (true) return;
         final Drawable d = this.getDrawable();
         if (d!=null){

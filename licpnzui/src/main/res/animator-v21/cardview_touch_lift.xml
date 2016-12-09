@@ -6,7 +6,7 @@
         android:state_pressed="true">
         <set>
             <objectAnimator
-                android:duration="40"
+                android:duration="80"
                 android:propertyName="translationZ"
                 android:valueTo="@dimen/card_raise_elevation"
                 android:valueType="floatType"/>

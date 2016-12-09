@@ -2,4 +2,7 @@
     <string name="app_name">Licpnzui</string>
     <string name="new_title_transition_name">new_title_transition_name</string>
     <string name="new_content_transition_name">new_content_transition_name</string>
+    <string name="new_background_transition_name">new_background_transition_name</string>
+    <string name="new_titlebar_background_transition_name">new_titlebar_transition</string>
+    <string name="new_preview_transition_name">new_preview_transition</string>
 </resources>

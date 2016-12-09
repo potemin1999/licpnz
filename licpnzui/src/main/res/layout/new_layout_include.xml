@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_title_container"
+        android:transitionName="@string/new_titlebar_background_transition_name"
+        android:background="@color/new_background"
+        android:elevation="1dp"
+        android:fitsSystemWindows="true">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_title_textview"
+            android:layout_weight="1"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textAllCaps="false"
+            android:transitionName="@string/new_title_transition_name"
+            android:background="@color/new_background"
+            android:layout_marginRight="@dimen/news_card_side_margin"
+            android:layout_marginLeft="@dimen/news_card_side_margin" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_content_textview"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textSize="14sp"
+                android:transitionName="@string/new_content_transition_name"
+                android:background="@color/new_background"
+                android:layout_marginTop="@dimen/news_card_content_padding"
+                android:layout_marginLeft="@dimen/news_card_content_padding"
+                android:layout_marginRight="@dimen/news_card_content_padding" />
+        </FrameLayout>
+
+        <org.licpnz.ui.widget.PreviewImage
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_delete"
+            android:id="@+id/new_src_imageview"
+            android:scaleType="fitCenter"
+            android:cropToPadding="false"
+            android:transitionName="@string/new_preview_transition_name" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_debug_id_textview"
+                android:text="id"
+                android:layout_weight="1" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_debug_previewsrc_textview"
+                android:background="@android:color/holo_green_dark"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

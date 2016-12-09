@@ -16,7 +16,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/drawer_frame">
+            android:layout_toRightOf="@+id/drawer_frame"
+            android:fitsSystemWindows="true">
 
             <include layout="@layout/content_layout" />
 
@@ -31,10 +32,7 @@
             android:background="@color/colorPrimaryDark"
             android:id="@+id/drawer_frame">
 
-            <include
-                android:fitsSystemWindows="true"
-                layout="@layout/drawer_layout"
-                />
+
 
         </FrameLayout>
 

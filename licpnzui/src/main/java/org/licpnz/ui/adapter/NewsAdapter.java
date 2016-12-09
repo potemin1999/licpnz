@@ -1,5 +1,6 @@
 package org.licpnz.ui.adapter;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,6 +27,7 @@ import org.licpnz.ui.Ui;
 import org.licpnz.ui.threads.NewPreviewLoadingThread;
 import org.licpnz.ui.widget.PreviewImage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +35,12 @@ import java.util.List;
  * Created by Ilya on 20.11.2016.
  */
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> implements NewsApi.AsyncNewsReceiver,View.OnClickListener {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
+        implements NewsApi.AsyncNewsReceiver,View.OnClickListener,Serializable {
 
     public interface Callback{
         public void onError(int err);
-        public void onNewAction(New n,int action);
+        public void onNewAction(New n,NewsHolder nh,int action);
     }
 
     public static final int ACTION_REQUEST_SHOW_DETAILS=4;
@@ -46,7 +49,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
     public void onClick(View v) {
         New n = findNewById(v.getId());
         if (n!=null){
-            mCallback.onNewAction(n,ACTION_REQUEST_SHOW_DETAILS);
+            mCallback.onNewAction(n,findHolderByNew(n), ACTION_REQUEST_SHOW_DETAILS);
         }else{
             Api.out.println("action click for null New");
         }
@@ -67,12 +70,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
     }
 
     public NewsHolder findHolderByNew(New n){
-        for (int i = 0;i<mList.size();i++){
-            if (mList.get(i).mObjects.containsKey("holder"))
-                if (n==mList.get(i).mObjects.get("holder"))
-                    return (NewsHolder) mList.get(i).mObjects.get("holder");
+        //for (int i = 0;i<mList.size();i++){
+            //if (mList.get(i).mObjects.containsKey("holder"))
+             //   if (n==mList.get(i).mObjects.get("holder"))
+                //    return (NewsHolder) mList.get(i).mObjects.get("holder");
+       // }
+        if (n.mObjects.containsKey("holder")){
+            return (NewsHolder) n.mObjects.get("holder");
+        }else {
+            return null;
         }
-        return null;
     }
 
 
@@ -177,16 +184,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
 
 
 
-    public class NewsHolder extends RecyclerView.ViewHolder{
+    public class NewsHolder extends RecyclerView.ViewHolder implements Serializable{
 
-        final FrameLayout mContainer;
-        final LinearLayout mNewLayout;
+        public final FrameLayout mContainer;
+        public final LinearLayout mNewLayout;
+        public final View mNewTransitionBackground;
+        public final View mTitlebarLayout;
         final LayoutInflater mInflater;
-        final TextView mTitleTextView;
-        final TextView mContentTextView;
+        public final TextView mTitleTextView;
+        public final TextView mContentTextView;
         final TextView mIdTextView;
-        final TextView mPreviewSrcTextView;
-        final PreviewImage mImageView;
+        public final TextView mPreviewSrcTextView;
+        public final PreviewImage mImageView;
         public New mNew;
         boolean isInUpdate;
 
@@ -196,10 +205,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
             mContainer.setLayoutParams(new RecyclerView.LayoutParams(-1,-2));
             mInflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
             mNewLayout = (LinearLayout) mInflater.inflate(R.layout.new_layout,null);
+            mNewTransitionBackground = mNewLayout.findViewById(R.id.new_background_transition);
+            mTitlebarLayout = mNewLayout.findViewById(R.id.new_title_container);
+
             mNewLayout.setClickable(true);
             mNewLayout.setFocusable(true);
             mNewLayout.setEnabled(true);
             mNewLayout.setOnClickListener(NewsAdapter.this);
+
             mTitleTextView = (TextView) mNewLayout.findViewById(R.id.new_title_textview);
             mContentTextView = (TextView) mNewLayout.findViewById(R.id.new_content_textview);
             mIdTextView = (TextView) mNewLayout.findViewById(R.id.new_debug_id_textview);
@@ -210,6 +223,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> im
            // mContentTextView.setOnClickListener(NewsAdapter.this);
            // mTitleTextView.setOnClickListener(NewsAdapter.this);
             mContainer.addView(mNewLayout,-1,-1);
+
+            nullTransitionName();
+        }
+
+        @TargetApi(21)
+        public void nullTransitionName(){
+            mTitleTextView.setTransitionName(null);
+            mContentTextView.setTransitionName(null);
+            mNewTransitionBackground.setTransitionName(null);
+            mTitlebarLayout.setTransitionName(null);
+            mImageView.setTransitionName(null);
         }
 
         public void setImage(Bitmap b){

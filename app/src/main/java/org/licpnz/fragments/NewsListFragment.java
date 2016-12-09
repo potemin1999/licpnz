@@ -33,14 +33,18 @@ public class NewsListFragment extends Fragment implements NewsAdapter.Callback {
     }
 
     @Override
-    public void onNewAction(New n, int action) {
-        Toast.makeText(getActivity(), "new clicked " + n.mID , Toast.LENGTH_SHORT).show();
-        NewFragment.newInstance(this,n,mListAdapter.findHolderByNew(n));
+    public void onNewAction(New n, NewsAdapter.NewsHolder nh, int action) {
+        //Toast.makeText(getActivity(), "new clicked " + n.mID , Toast.LENGTH_SHORT).show();
+        //NewsAdapter.NewsHolder nh = mListAdapter.findHolderByNew(n);
+        NewFragment.newInstance(this,n,nh);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // if (savedInstanceState!=null)
+         //   mListAdapter = (NewsAdapter) savedInstanceState.getSerializable("adapter");
+       // else
         mListAdapter = new NewsAdapter(getActivity(),this);
         mListLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         mListItemAnimator = new DefaultItemAnimator();
@@ -50,6 +54,12 @@ public class NewsListFragment extends Fragment implements NewsAdapter.Callback {
         mRecyclerView.setLayoutManager(mListLayoutManager);
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setItemAnimator(mListItemAnimator);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //outState.putSerializable("adapter",mListAdapter);
+        super.onSaveInstanceState(outState);
     }
 
     @Nullable

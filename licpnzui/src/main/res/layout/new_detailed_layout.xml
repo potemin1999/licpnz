@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="24dp"
+    android:outlineProvider="bounds"
+    android:background="@color/new_background"
+    android:transitionName="@string/new_background_transition_name"
+    android:id="@+id/new_background_transition">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -10,26 +17,73 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:id="@+id/new_details_container">
 
-            <TextView
-                android:text="TextView"
-                android:transitionName="@string/new_title_transition_name"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:gravity="center"
+                android:elevation="4dp"
+                android:outlineProvider="bounds"
+                android:id="@+id/new_title_container"
+                android:transitionName="@string/new_titlebar_background_transition_name"
+                android:background="?android:attr/colorBackgroundFloating">
+
+                <ImageView
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    app:srcCompat="?android:attr/fingerprintAuthDrawable"
+                    android:id="@+id/imageView" />
+
+                <TextView
+                    android:text="TextView"
+                    android:transitionName="@string/new_title_transition_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/new_detailed_title_text_view"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:background="@color/new_background"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/news_card_side_margin"
+                android:layout_marginRight="@dimen/news_card_side_margin">
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:transitionName="@string/new_content_transition_name"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/new_detailed_content_text_view"
+                    android:textColorLink="@android:color/black"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:background="?android:attr/colorBackgroundFloating"
+                    android:layout_marginTop="@dimen/news_card_top_margin"
+                    android:layout_marginLeft="@dimen/news_card_content_padding"
+                    android:layout_marginRight="@dimen/news_card_content_padding" />
+
+                <ViewFlipper
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/new_detailed_title_text_view"
-                android:textSize="24sp" />
+                app:srcCompat="@android:color/transparent"
+                android:id="@+id/new_preview_detailed_image"
+                android:transitionName="@string/new_preview_transition_name" />
 
-            <ViewFlipper
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/new_image_flipper_height"/>
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:transitionName="@string/new_content_transition_name"
-                android:layout_height="wrap_content"
-                android:id="@+id/new_detailed_content_text_view" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

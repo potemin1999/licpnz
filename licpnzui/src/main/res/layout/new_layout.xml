@@ -15,76 +15,23 @@
         android:layout_marginRight="@dimen/news_card_side_margin"
         android:layout_marginBottom="@dimen/news_card_bottom_margin"
         android:layout_marginTop="@dimen/news_card_top_margin"
-        app:cardMaxElevation="@dimen/card_raise_elevation">
+        android:outlineProvider="background">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/news_card_content_padding">
+                android:layout_height="match_parent"
+                android:id="@+id/new_background_transition"
+                android:transitionName="@string/new_background_transition_name"
+                android:background="@color/new_background" />
 
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/new_title_textview"
-                    android:layout_weight="1"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textAllCaps="false"
-                    android:layout_marginLeft="@dimen/news_card_content_padding"
-                    android:layout_marginRight="@dimen/news_card_content_padding" />
-            </LinearLayout>
+           <include
+               layout="@layout/new_layout_include"/>
 
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/new_content_textview"
-                android:textAppearance="@android:style/TextAppearance.Small"
-                android:textSize="16sp"
-                android:layout_marginLeft="@dimen/news_card_content_padding"
-                android:layout_marginRight="@dimen/news_card_content_padding" />
+        </FrameLayout>
 
-            <org.licpnz.ui.widget.PreviewImage
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_delete"
-                android:id="@+id/new_src_imageview"
-                android:scaleType="fitCenter"
-                android:cropToPadding="false" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right">
-
-                    <TextView
-                        android:text="TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/new_debug_previewsrc_textview"
-                        android:background="@android:color/holo_green_dark"
-                        android:visibility="invisible" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/new_debug_id_textview"
-                    android:text="id" />
-
-            </FrameLayout>
-
-        </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
