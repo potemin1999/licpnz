@@ -23,7 +23,7 @@
 
         </FrameLayout>
 
-        <FrameLayout
+        <android.support.design.internal.ScrimInsetsFrameLayout
             android:layout_width="@dimen/drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
@@ -33,7 +33,7 @@
             android:focusable="true"
             android:background="@color/colorPrimaryDark">
 
-        </FrameLayout>
+        </android.support.design.internal.ScrimInsetsFrameLayout>
 
 
 

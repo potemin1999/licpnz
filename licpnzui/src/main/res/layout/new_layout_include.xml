@@ -3,9 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:id="@+id/new_layout"
+    android:duplicateParentState="false"
+    android:clickable="true"
+    android:contextClickable="false"
+    android:focusable="false"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:orientation="horizontal"

@@ -24,6 +24,7 @@ import org.licpnz.api.news.New;
 import org.licpnz.api.news.NewsApi;
 import org.licpnz.ui.R;
 import org.licpnz.ui.Ui;
+import org.licpnz.ui.drawable.RoundRectDrawable;
 import org.licpnz.ui.threads.NewPreviewLoadingThread;
 import org.licpnz.ui.widget.PreviewImage;
 
@@ -124,14 +125,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
             transformNew(n);
             onInsertNew(n);
             mList.add(mList.size(),n);
-            h.sendEmptyMessage(mList.size()-1);
+            final int what = mList.size() - 1;
+            h.post(new Runnable(){
+                @Override
+                public void run() {
+                    if (what>-1) {
+                        notifyItemInserted(what);
+                    }else{
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+           // h.sendEmptyMessage(mList.size()-1);
         }
         //h.sendEmptyMessage(-111);
     }
 
     @Override
     public NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        NewsHolder nh = new NewsHolder(mContext);
+        NewsHolder nh = new NewsHolder(mContext,(ViewGroup) ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)) .inflate(R.layout.new_layout,null));
         return nh;
     }
 
@@ -186,8 +198,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
 
     public class NewsHolder extends RecyclerView.ViewHolder implements Serializable{
 
-        public final FrameLayout mContainer;
-        public final LinearLayout mNewLayout;
+        public final ViewGroup mContainer;
+        public final ViewGroup mNewLayout;
         public final View mNewTransitionBackground;
         public final View mTitlebarLayout;
         final LayoutInflater mInflater;
@@ -199,19 +211,26 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
         public New mNew;
         boolean isInUpdate;
 
-        public NewsHolder(Context c){
-            super(new FrameLayout(c));
-            mContainer = (FrameLayout) itemView;
-            mContainer.setLayoutParams(new RecyclerView.LayoutParams(-1,-2));
+        public NewsHolder(Context c,View v){
+            super(v);
+            mContainer = (ViewGroup) itemView;
+
+            RecyclerView.LayoutParams llll = new RecyclerView.LayoutParams(-1,-2);
+            llll.setMargins(10,10,10,10);
+            mContainer.setLayoutParams(llll);
+
             mInflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
-            mNewLayout = (LinearLayout) mInflater.inflate(R.layout.new_layout,null);
-            mNewTransitionBackground = mNewLayout.findViewById(R.id.new_background_transition);
+            mNewLayout = (ViewGroup) mContainer.findViewById(R.id.new_layout); // (ViewGroup) mInflater.inflate(R.layout.new_layout,null);
+            mNewTransitionBackground = mContainer.findViewById(R.id.new_background_transition);
             mTitlebarLayout = mNewLayout.findViewById(R.id.new_title_container);
 
             mNewLayout.setClickable(true);
             mNewLayout.setFocusable(true);
             mNewLayout.setEnabled(true);
             mNewLayout.setOnClickListener(NewsAdapter.this);
+
+
+
 
             mTitleTextView = (TextView) mNewLayout.findViewById(R.id.new_title_textview);
             mContentTextView = (TextView) mNewLayout.findViewById(R.id.new_content_textview);
@@ -222,7 +241,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
             //mImageView.setOnClickListener(NewsAdapter.this);
            // mContentTextView.setOnClickListener(NewsAdapter.this);
            // mTitleTextView.setOnClickListener(NewsAdapter.this);
-            mContainer.addView(mNewLayout,-1,-1);
+            //mContainer.addView(mNewLayout,-1,-1);
 
             nullTransitionName();
         }
@@ -234,6 +253,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
             mNewTransitionBackground.setTransitionName(null);
             mTitlebarLayout.setTransitionName(null);
             mImageView.setTransitionName(null);
+
+            //mNewTransitionBackground.setBackground(new RoundRectDrawable(mNewTransitionBackground.getContext().getResources().getDimensionPixelSize(R.dimen.cardview_default_radius)));
         }
 
         public void setImage(Bitmap b){

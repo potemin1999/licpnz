@@ -27,6 +27,7 @@ import android.widget.Toast;
 import org.licpnz.R;
 import org.licpnz.activities.MainActivity;
 import org.licpnz.api.news.New;
+import org.licpnz.transitions.ElevationTransition;
 import org.licpnz.transitions.NewDetailsTransition;
 import org.licpnz.ui.adapter.NewsAdapter;
 
@@ -107,12 +108,19 @@ public class NewFragment extends Fragment {
 
     @TargetApi(21)
     public void onDestroy(){
+        try{
+            mRequester.mNewTransitionBackground.setElevation(0);
+            mRequester.mNewLayout.setTranslationZ(0);
+        }catch(Throwable t) {}
         super.onDestroy();
-
     }
 
     @TargetApi(21)
     public static void prepareTransition(NewsListFragment nlf, New n,final NewsAdapter.NewsHolder nh,FragmentTransaction ft,NewFragment nf){
+
+        nh.mNewTransitionBackground.setElevation(nlf.getResources().getDimensionPixelSize(R.dimen.cardview_default_elevation));
+        nh.mNewLayout.setTranslationZ(nh.mNewTransitionBackground.getElevation());
+
         nh.mTitleTextView.setTransitionName(nlf.getResources().getString(org.licpnz.ui.R.string.new_title_transition_name));
         nh.mContentTextView.setTransitionName(nlf.getResources().getString(org.licpnz.ui.R.string.new_content_transition_name));
         nh.mNewTransitionBackground.setTransitionName(nlf.getResources().getString(org.licpnz.ui.R.string.new_background_transition_name));
@@ -125,7 +133,7 @@ public class NewFragment extends Fragment {
         ft.addSharedElement(nh.mTitlebarLayout,nlf.getResources().getString(org.licpnz.ui.R.string.new_titlebar_background_transition_name));
         ft.addSharedElement(nh.mImageView,nlf.getResources().getString(org.licpnz.ui.R.string.new_preview_transition_name));
 
-        NewDetailsTransition mEnter = new NewDetailsTransition();
+        NewDetailsTransition mEnter = new NewDetailsTransition();//nlf.getResources().getDimensionPixelSize(R.dimen.cardview_default_elevation), ElevationTransition.ELEVATION_AUTO);
         NewDetailsTransition mReturn = new NewDetailsTransition();
         mReturn.addListener(new Transition.TransitionListener() {
             @Override

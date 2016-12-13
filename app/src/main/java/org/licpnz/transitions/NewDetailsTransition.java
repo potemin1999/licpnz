@@ -18,13 +18,19 @@ import android.transition.TransitionValues;
 public class NewDetailsTransition extends TransitionSet{
 
     public NewDetailsTransition(){
+        this(0,0);
+    }
+    public NewDetailsTransition(float a,float b){
         setOrdering(ORDERING_TOGETHER);
         addTransition(new ChangeImageTransform());
         //addTransition(new AutoTransition());
         addTransition(new ChangeBounds());
         //addTransition(new ChangeClipBounds());
         addTransition(new ChangeTransform());
-        addTransition(new ElevationTransition());
+        if (a==0 && b==0)
+            addTransition(new ElevationTransition());
+        else
+            addTransition(new ElevationTransition(a,b));
     }
 
     @Override

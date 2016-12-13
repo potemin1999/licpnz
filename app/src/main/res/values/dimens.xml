@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="drawer_width">300dp</dimen>
     <dimen name="menu_element_height">48dp</dimen>
+    <dimen name="setting_element_height">56dp</dimen>
+
 </resources>

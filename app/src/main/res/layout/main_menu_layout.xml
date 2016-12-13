@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="false">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_insetEdge="top">
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:fitsSystemWindows="true">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:fitsSystemWindows="false">
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@android:dimen/thumbnail_height"
-                android:background="@android:color/white"
-                android:fitsSystemWindows="true">
+                    android:layout_width="match_parent"
+                    android:layout_height="@android:dimen/thumbnail_height"
+                    android:background="@android:color/white"
+                    android:fitsSystemWindows="false">
 
-                <ImageView
-                    android:layout_width="141dp"
-                    android:layout_height="132dp"
-                    app:srcCompat="@mipmap/ic_launcher"
-                    android:id="@+id/imageView3"
-                    android:layout_gravity="bottom|right"
-                    android:src="@mipmap/ic_launcher" />
+                    <ImageView
+                        android:layout_width="141dp"
+                        android:layout_height="132dp"
+                        app:srcCompat="@mipmap/ic_launcher"
+                        android:id="@+id/imageView3"
+                        android:layout_gravity="bottom|right"
+                        android:src="@mipmap/ic_launcher" />
 
-            </FrameLayout>
+                </FrameLayout>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/drawer_menu_linear_container"
-                android:elevation="6dp"
+                android:elevation="12dp"
                 android:outlineProvider="bounds"
                 android:minHeight="0dp"
                 android:background="@color/colorPrimaryDark"></LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-</android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

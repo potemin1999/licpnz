@@ -1,8 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppThemeAbst">
-    </style>
+    <style name="AppTheme" parent="AppThemeAbst"/>
     <style name="AppThemeAbst" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -14,5 +13,8 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
     </style>
-
+    <style name="SettingsStyle" parent="SettingsStyleAbst"/>
+    <style name="SettingsStyleAbst" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+    </style>
 </resources>

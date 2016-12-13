@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="24dp"
+    android:elevation="@dimen/new_details_layout_elevation"
     android:outlineProvider="bounds"
     android:background="@color/new_background"
     android:transitionName="@string/new_background_transition_name"
@@ -12,7 +12,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,18 +24,19 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:elevation="4dp"
+                android:elevation="@dimen/app_bar_elevation"
                 android:outlineProvider="bounds"
                 android:id="@+id/new_title_container"
                 android:transitionName="@string/new_titlebar_background_transition_name"
-                android:background="?android:attr/colorBackgroundFloating">
+                android:background="@color/colorBackgroundFloating"
+                android:minHeight="?android:attr/actionBarSize">
 
                 <ImageView
                     android:layout_width="?android:attr/actionBarSize"
                     android:layout_height="?android:attr/actionBarSize"
-                    app:srcCompat="?android:attr/fingerprintAuthDrawable"
+                    app:srcCompat="@android:drawable/star_big_on"
                     android:id="@+id/imageView" />
 
                 <TextView
@@ -66,7 +68,7 @@
                     android:textColorLink="@android:color/black"
                     android:textSize="14sp"
                     android:textColor="@android:color/black"
-                    android:background="?android:attr/colorBackgroundFloating"
+                    android:background="@color/colorBackgroundFloating"
                     android:layout_marginTop="@dimen/news_card_top_margin"
                     android:layout_marginLeft="@dimen/news_card_content_padding"
                     android:layout_marginRight="@dimen/news_card_content_padding" />

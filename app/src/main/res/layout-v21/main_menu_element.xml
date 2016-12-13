@@ -5,10 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/menu_element_height"
     android:padding="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="@dimen/menu_element_height"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:clickable="true"
+    android:contextClickable="true">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -17,7 +20,9 @@
         android:id="@+id/main_menu_element_image"
         android:layout_weight="1"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginLeft="8dp"
+        android:elevation="1dp"
+        android:outlineProvider="background" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -26,8 +31,7 @@
         android:layout_weight="1"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:gravity="center"
-        android:clickable="true">
+        android:gravity="center">
 
         <TextView
             android:text="TextView"

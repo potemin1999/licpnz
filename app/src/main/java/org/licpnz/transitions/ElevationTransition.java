@@ -14,6 +14,19 @@ import android.view.ViewGroup;
 
 @TargetApi(21)
 public class ElevationTransition extends Transition {
+
+    float startElevation=ELEVATION_AUTO,endElevation=ELEVATION_AUTO;
+
+    public ElevationTransition(){
+        super();
+    }
+
+    public ElevationTransition(float se,float ee){
+        super();
+        startElevation = se;
+        endElevation = ee;
+    }
+
     @Override
     public void captureStartValues(TransitionValues transitionValues) {
         captureValues(transitionValues);
@@ -33,8 +46,8 @@ public class ElevationTransition extends Transition {
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
         if (startValues!=null&&endValues!=null){
             final View endView = endValues.view;
-            final float startE = (float) startValues.values.get("elevation");
-            final float endE = (float) endValues.values.get("elevation");
+            final float startE = (startElevation==ELEVATION_AUTO ? (float) startValues.values.get("elevation") : startElevation);
+            final float endE = (endElevation==ELEVATION_AUTO ? (float) endValues.values.get("elevation") : endElevation);
             final float startZ = (float) startValues.values.get("translationZ");
             final float endZ = (float) endValues.values.get("translationZ");
             if (startE!=endE|| startZ!=endZ){
@@ -52,4 +65,6 @@ public class ElevationTransition extends Transition {
         }
         return null;
     }
+
+    public static final int ELEVATION_AUTO = -1;
 }

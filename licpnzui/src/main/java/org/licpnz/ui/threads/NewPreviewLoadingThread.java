@@ -42,7 +42,11 @@ public class NewPreviewLoadingThread extends Thread {
     public void run() {
         Message m = new Message();
         System.out.println("new preview thread started on new "+mNew.mID);
-        BitmapLoadingThread blt = new BitmapLoadingThread(Api.getSiteHost()+mNotFullUrl);
+        BitmapLoadingThread blt = null;
+        if (mNotFullUrl.startsWith("http"))
+            blt = new BitmapLoadingThread(mNotFullUrl);
+        else
+            blt = new BitmapLoadingThread(Api.getSiteHost()+mNotFullUrl);
         blt.start();
         m.obj = blt.getBitmap();
         if (m.obj!=null) {

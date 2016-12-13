@@ -3,4 +3,7 @@
     <style name="AppTheme" parent="AppThemeAbst">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+    <style name="SettingsStyle" parent="SettingsStyleAbst">
+
+    </style>
 </resources>
