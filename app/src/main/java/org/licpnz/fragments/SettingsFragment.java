@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.licpnz.R;
+import org.licpnz.activities.SettingsActivity;
+import org.licpnz.settings.ConnectionSettingsFragment;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * Created by Ilya on 17.11.2016.
  */
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements View.OnClickListener{
 
     FrameLayout mContainer;
     RecyclerView mList;
@@ -42,6 +44,7 @@ public class SettingsFragment extends Fragment {
         mList.setLayoutManager(mLM);
         mList.setItemAnimator(new DefaultItemAnimator());
         mList.setAdapter(mAdapter);
+        addSetting(2,getResources().getDrawable(R.mipmap.ic_launcher),"Connection ",null);
         addSetting(0,getResources().getDrawable(R.mipmap.ic_launcher),getString(R.string.settings_category_news),null);
         addSetting(1,getResources().getDrawable(R.mipmap.ic_launcher),getString(R.string.settings_category_about),null);
     }
@@ -62,9 +65,22 @@ public class SettingsFragment extends Fragment {
         mAdapter.notifyItemInserted(mSettings.size()-1);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case 0:{
+                getActivity().getFragmentManager().beginTransaction()
+                        .replace(SettingsActivity.mContainerId,new ConnectionSettingsFragment(),"ConnectionSettings")
+                        .addToBackStack("ConnectionSettingsBackStack")
+                        .commit();
+                break;
+            }
+            case 1:{
 
-
-
+                break;
+            }
+        }
+    }
 
 
     public class SettingsAdapter extends RecyclerView.Adapter<SettingHolder>{
@@ -74,6 +90,7 @@ public class SettingsFragment extends Fragment {
             LinearLayout ll = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.settings_menu_element,null);
             ll.setLayoutParams(new RecyclerView.LayoutParams(-1,-2));
             SettingHolder sh = new SettingHolder(ll);
+            sh.mContainer.setOnClickListener(SettingsFragment.this);
             return sh;
         }
 
@@ -81,6 +98,7 @@ public class SettingsFragment extends Fragment {
         public void onBindViewHolder(SettingHolder holder, int position) {
             Setting s = mSettings.get(position);
             holder.mTitle.setText(s.mTitle);
+            holder.mContainer.setId(position);
             if (s.mIcon!=null)
                 holder.mImage.setImageDrawable(s.mIcon);
             else
@@ -114,6 +132,7 @@ public class SettingsFragment extends Fragment {
         public String mSubtitle=null;
         public int mId=0;
     }
+
 
 
 

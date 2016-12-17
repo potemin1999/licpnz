@@ -14,7 +14,7 @@ public class SettingsActivity extends Activity {
     FrameLayout mContainer;
     SettingsFragment mFragment;
     @IdRes
-    int mContainerId = 345;
+    public static int mContainerId = 345;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

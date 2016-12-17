@@ -3,6 +3,7 @@
     <string name="drawer_menu_settings">Настройки</string>
     <string name="drawer_menu_news">Новости</string>
     <string name="settings_title">Настройки</string>
+    <string name="settings_dialog_host_change_title">Host change</string>
     <string name="settings_category_news">News settings</string>
     <string name="settings_category_about">About</string>
 </resources>

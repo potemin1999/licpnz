@@ -5,5 +5,5 @@
     <dimen name="drawer_width">300dp</dimen>
     <dimen name="menu_element_height">48dp</dimen>
     <dimen name="setting_element_height">56dp</dimen>
-
+    <dimen name="setting_element_image_height">48dp</dimen>
 </resources>

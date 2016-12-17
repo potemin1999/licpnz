@@ -45,6 +45,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
     }
 
     public static final int ACTION_REQUEST_SHOW_DETAILS=4;
+    public static final int ERROR_NEWS_NOT_RECEIVED=8;
 
     @Override
     public void onClick(View v) {
@@ -163,6 +164,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
 
     @Override
     public void onReceiveNews(New[] receive, int requestId) {
+        if (receive==null) {
+            mCallback.onError(ERROR_NEWS_NOT_RECEIVED);
+            return;
+        }
         System.out.println("received "+receive.length+" news");
         insertNews(receive);
     }

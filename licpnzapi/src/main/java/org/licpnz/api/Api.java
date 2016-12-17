@@ -25,6 +25,7 @@ public class Api {
     public static PrintStream err;
     public static PrintStream log;
     public static final boolean DEBUG = true;
+    public static IApiSettingsProvider mSProvider;
 
     private static boolean isInitialized = false;
     private static ApiInstance mInstance;
@@ -36,10 +37,22 @@ public class Api {
     }
 
     public static final String getHost(){
+        if (mSProvider!=null){
+            final String s = mSProvider.getHost();
+            if (s!=null)
+                return s;
+        }
         return "http://localhost:8080/";
     }
 
-    public static final String getSiteHost() { return "http://licpnz.ru/"; }
+    public static final String getSiteHost() {
+        if (mSProvider!=null){
+            final String s = mSProvider.getSiteHost();
+            if (s!=null)
+                return s;
+        }
+        return "http://licpnz.ru/";
+    }
 
     public static void init(){
         if (!isInitialized){
@@ -58,7 +71,9 @@ public class Api {
         return (long)(Math.random()*2.0 - 1.0)*9223372036854775807l;
     }
 
-
+    public static void setSettingsProvider(IApiSettingsProvider sp){
+        mSProvider = sp;
+    }
 
 
 
@@ -128,6 +143,11 @@ public class Api {
 
     public interface ProtectedChannelListener{
         public long getKey(long key);
+    }
+
+    public interface IApiSettingsProvider{
+        public String getHost();
+        public String getSiteHost();
     }
 
 
