@@ -66,6 +66,6 @@ public class HalfRoundRectDrawable extends Drawable {
 
     @Override
     public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
+        return 0;
     }
 }
