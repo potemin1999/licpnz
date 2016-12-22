@@ -35,7 +35,9 @@
             android:transitionName="@string/new_title_transition_name"
             android:background="@color/new_background"
             android:layout_marginRight="@dimen/news_card_side_margin"
-            android:layout_marginLeft="@dimen/news_card_side_margin" />
+            android:layout_marginLeft="@dimen/news_card_side_margin"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
 
@@ -62,7 +64,8 @@
                 android:background="@color/new_background"
                 android:layout_marginTop="@dimen/news_card_content_padding"
                 android:layout_marginLeft="@dimen/news_card_content_padding"
-                android:layout_marginRight="@dimen/news_card_content_padding" />
+                android:layout_marginRight="@dimen/news_card_content_padding"
+                android:layout_marginBottom="2dp" />
         </FrameLayout>
 
         <org.licpnz.ui.widget.PreviewImage
@@ -72,28 +75,39 @@
             android:id="@+id/new_src_imageview"
             android:scaleType="fitCenter"
             android:cropToPadding="false"
-            android:transitionName="@string/new_preview_transition_name" />
+            android:transitionName="@string/new_preview_transition_name"
+            android:maxHeight="800dp" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            android:layout_margin="4dp">
+
+            <TextView
+                android:text="time date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_time_date_textview"
+                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/new_debug_id_textview"
                 android:text="id"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:textAlignment="textEnd" />
 
             <TextView
                 android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
                 android:id="@+id/new_debug_previewsrc_textview"
                 android:background="@android:color/holo_green_dark"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:layout_width="1dp" />
         </LinearLayout>
 
     </LinearLayout>

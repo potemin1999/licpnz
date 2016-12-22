@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.licpnz.api.Api;
 import org.licpnz.api.news.New;
@@ -85,14 +86,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
     }
 
 
-    public final String[][] mRegex = {
-            {"&laquo;","\""},//"«"},
-            {"&raquo;","\""},//"»"},
-            {"&dquo;","\""},
-            {"&quot;","\""},
-            {"&ndash;","–"},
-            {"&nbsp;"," "}
-    };
 
     private Handler h;
 
@@ -106,6 +99,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
         h = new Handler(){
             @Override
             public void handleMessage(Message msg) {
+                System.out.println("receive emty message");
+                //Toast.makeText(mContext,"inserted",0).show();
                 if (msg.what>-1) {
                     notifyItemInserted(msg.what);
                 }else{
@@ -122,23 +117,35 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
     }
 
     public void insertNews(New[] news){
+        final int start = mList.size();
+        final int size = news.length;
         for (New n : news){
             transformNew(n);
             onInsertNew(n);
             mList.add(mList.size(),n);
             final int what = mList.size() - 1;
-            h.post(new Runnable(){
+           // Toast.makeText(mContext,"inserted",0).show();
+            /*h.post(new Runnable(){
                 @Override
                 public void run() {
                     if (what>-1) {
+                        Toast.makeText(mContext,"inserted",0).show();
                         notifyItemInserted(what);
                     }else{
                         notifyDataSetChanged();
                     }
                 }
-            });
-           // h.sendEmptyMessage(mList.size()-1);
+            });*/
+
         }
+        System.out.println("send empty message");
+        h.sendEmptyMessage(mList.size()-1);
+        /*h.post(new Runnable(){
+            @Override
+            public void run() {
+                notifyItemRangeInserted(start,start+size);
+            }
+        });*/
         //h.sendEmptyMessage(-111);
     }
 
@@ -187,17 +194,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
 
     public void transformNew(final New n){
         if (n.mT.mText!=null)
-            n.mT.mText = regexReplace(n.mT.mText);
+            n.mT.mText = NewsApi.regexReplace(n.mT.mText);
         if (n.mM.mText!=null)
-            n.mM.mText = regexReplace(n.mM.mText);
+            n.mM.mText = NewsApi.regexReplace(n.mM.mText);
     }
 
-    public String regexReplace(String in){
-        for (int i = 0; i<mRegex.length; i++) {
-            in = in.replaceAll(mRegex[i][0],mRegex[i][1]);
-        }
-        return in;
-    }
 
 
 
@@ -210,6 +211,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
         final LayoutInflater mInflater;
         public final TextView mTitleTextView;
         public final TextView mContentTextView;
+        public final TextView mTimeDateTextView;
         final TextView mIdTextView;
         public final TextView mPreviewSrcTextView;
         public final PreviewImage mImageView;
@@ -242,6 +244,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
             mIdTextView = (TextView) mNewLayout.findViewById(R.id.new_debug_id_textview);
             mPreviewSrcTextView = (TextView) mNewLayout.findViewById(R.id.new_debug_previewsrc_textview);
             mImageView = (PreviewImage)  mNewLayout.findViewById(R.id.new_src_imageview);
+            mTimeDateTextView = (TextView) mNewLayout.findViewById(R.id.new_time_date_textview);
 
             //mImageView.setOnClickListener(NewsAdapter.this);
            // mContentTextView.setOnClickListener(NewsAdapter.this);
@@ -258,6 +261,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
             mNewTransitionBackground.setTransitionName(null);
             mTitlebarLayout.setTransitionName(null);
             mImageView.setTransitionName(null);
+            mTimeDateTextView.setTransitionName(null);
 
             //mNewTransitionBackground.setBackground(new RoundRectDrawable(mNewTransitionBackground.getContext().getResources().getDimensionPixelSize(R.dimen.cardview_default_radius)));
         }
@@ -314,9 +318,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
                 mContentTextView.getLayoutParams().height = -2;
             mContentTextView.requestLayout();
             mContentTextView.setText(n.mM.mText);
+            mTimeDateTextView.setText(n.mI.mTime+"  "+n.mI.mDate);
+            if (!Ui.isImageLoadingEnabled()) return;
             String s = checkRequestForPreview(mNew);
             if (s!=null){
-
+                n.mObjects.put("preview href",s);
                 if (n.mObjects.containsKey("preview bitmap loading")){
                     if ((((int) n.mObjects.get("preview bitmap loading")) == 100)) {
                         final Bitmap b = (Bitmap) n.mObjects.get("preview bitmap");
@@ -340,8 +346,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder>
                 mImageView.setVisibility(View.INVISIBLE);
             }
             mImageView.requestLayout();
-
         }
+
+
     }
 
     private static Drawable getColorDrawable(final int color){

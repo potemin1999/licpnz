@@ -14,20 +14,22 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="left|center">
 
         <ImageView
-            android:layout_height="@dimen/setting_element_image_height"
             app:srcCompat="@mipmap/ic_launcher"
             android:id="@+id/element_image"
             android:layout_margin="8dp"
-            android:layout_width="@dimen/setting_element_image_height" />
+            android:layout_width="36dp"
+            android:scaleType="center"
+            android:layout_height="36dp" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <TextView
                 android:text="TextView"
@@ -36,16 +38,22 @@
                 android:id="@+id/element_text"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:gravity="left|center"
                 android:layout_weight="1"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+                android:lines="1"
+                android:textColor="@color/textColorPrimary" />
 
             <TextView
                 android:text=" "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/element_subtext"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                android:gravity="left|center"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+                android:textColor="?android:attr/textColorTertiary" />
 
         </LinearLayout>
 

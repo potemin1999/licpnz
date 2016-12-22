@@ -13,6 +13,7 @@ public final class New implements Serializable {
     public Message mM;
     public Info mI;
     public int mID;
+    public boolean isDetailsRequested = false;
     public HashMap<String,Object> mObjects;
 
     public New(){
@@ -25,9 +26,11 @@ public final class New implements Serializable {
 
     public class Message{
         public String mText;
+        public String mDetailedText;
         public String mAttributes;
         public String[] mRefs;
         public String[] mAttached;
+        public String[] mDetailedSrc;
     }
 
     public class Title{
@@ -39,6 +42,8 @@ public final class New implements Serializable {
     public class Info{
         public String mCategory;
         public String mCategoryRef;
+        public String mDate;
+        public String mTime;
         public long mReadsCount;
         public String mAuthor;
         public String mCommentsCount;

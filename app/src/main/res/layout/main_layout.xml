@@ -8,9 +8,11 @@
     android:fitsSystemWindows="true">
 
     <android.support.v4.widget.DrawerLayout
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:id="@+id/main_drawer_layout">
 
 
         <FrameLayout

@@ -1,8 +1,6 @@
 package org.licpnz.settings;
 
 import android.app.Fragment;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,24 +20,24 @@ import org.licpnz.LicApplication;
 import org.licpnz.R;
 import org.licpnz.api.Api;
 import org.licpnz.dialogs.HostChangeDialogFragment;
-import org.licpnz.fragments.SettingsFragment;
+import org.licpnz.dialogs.ImageLoadingDialogFragment;
 
 import java.util.ArrayList;
 
 /**
- * Created by Ilya on 14.12.2016.
+ * Created by Ilya on 21.12.2016.
  */
 
-public class ConnectionSettingsFragment extends Fragment implements View.OnClickListener{
+public class NewsSettingsFragment extends Fragment implements View.OnClickListener {
 
     FrameLayout mContent;
     RecyclerView mList;
     RecyclerView.LayoutManager mLM;
-    Adapter mAdapter;
-    ArrayList<Setting> mSettings = new ArrayList<Setting>();
+    NewsSettingsFragment.Adapter mAdapter;
+    ArrayList<NewsSettingsFragment.Setting> mSettings = new ArrayList<NewsSettingsFragment.Setting>();
     Toolbar mToolbar;
 
-    public ConnectionSettingsFragment() {
+    public NewsSettingsFragment() {
         super();
 
     }
@@ -49,14 +47,14 @@ public class ConnectionSettingsFragment extends Fragment implements View.OnClick
         super.onCreate(savedInstanceState);
         mContent = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.settings_fragment_layout,null);
         mToolbar = (Toolbar) mContent.findViewById(R.id.settings_toolbar);
-        mToolbar.setTitle(R.string.settings_connection_title);
+        mToolbar.setTitle(R.string.settings_news_title);
         mList = (RecyclerView) mContent.findViewById(R.id.settings_list);
-        mAdapter = new Adapter();
+        mAdapter = new NewsSettingsFragment.Adapter();
         mLM = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         mList.setLayoutManager(mLM);
         mList.setItemAnimator(new DefaultItemAnimator());
         mList.setAdapter(mAdapter);
-        addSetting(222,null,"Change host ", Api.getHost());
+        addSetting(222,null,"Загрузка изображений",(LicApplication.getInstance().getImageLoadingEnabled() ? "включено" : "выключено"));
     }
 
     @Nullable
@@ -66,7 +64,7 @@ public class ConnectionSettingsFragment extends Fragment implements View.OnClick
     }
 
     public void addSetting(int id, Drawable icon, String title, String subtitle){
-        Setting s = new Setting();
+        NewsSettingsFragment.Setting s = new NewsSettingsFragment.Setting();
         s.mIcon = icon;
         s.mId = id;
         s.mTitle = title;
@@ -79,7 +77,7 @@ public class ConnectionSettingsFragment extends Fragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case 0:{
-                new HostChangeDialogFragment()
+                new ImageLoadingDialogFragment()
                         .show(getFragmentManager(),"HostChangeDialog");
                 break;
             }
@@ -116,20 +114,20 @@ public class ConnectionSettingsFragment extends Fragment implements View.OnClick
         public int mId=0;
     }
 
-    public class Adapter extends RecyclerView.Adapter<ItemHolder>{
+    public class Adapter extends RecyclerView.Adapter<NewsSettingsFragment.ItemHolder>{
 
         @Override
-        public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public NewsSettingsFragment.ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = getActivity().getLayoutInflater().inflate(R.layout.settings_menu_element,null);
-            v.setOnClickListener(ConnectionSettingsFragment.this);
+            v.setOnClickListener(NewsSettingsFragment.this);
             v.setLayoutParams(new RecyclerView.LayoutParams(-1,-2));
-            ItemHolder ih = new ItemHolder(v);
+            NewsSettingsFragment.ItemHolder ih = new NewsSettingsFragment.ItemHolder(v);
             return ih;
         }
 
         @Override
-        public void onBindViewHolder(ItemHolder holder, int position) {
-            Setting s = mSettings.get(position);
+        public void onBindViewHolder(NewsSettingsFragment.ItemHolder holder, int position) {
+            NewsSettingsFragment.Setting s = mSettings.get(position);
             holder.mTitle.setText(s.mTitle);
             holder.mContainer.setId(position);
             if (s.mSubtitle!=null)
@@ -147,4 +145,5 @@ public class ConnectionSettingsFragment extends Fragment implements View.OnClick
             return mSettings.size();
         }
     }
+
 }

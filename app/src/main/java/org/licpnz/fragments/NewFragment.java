@@ -6,15 +6,22 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.method.TransformationMethod;
 import android.transition.AutoTransition;
 import android.transition.Explode;
 import android.transition.Fade;
+import android.transition.Scene;
 import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.transition.TransitionSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,18 +33,23 @@ import android.widget.Toast;
 
 import org.licpnz.R;
 import org.licpnz.activities.MainActivity;
+import org.licpnz.api.Api;
 import org.licpnz.api.news.New;
+import org.licpnz.api.news.NewsApi;
 import org.licpnz.transitions.ElevationTransition;
 import org.licpnz.transitions.NewDetailsTransition;
 import org.licpnz.ui.adapter.NewsAdapter;
+import org.licpnz.ui.drawable.HalfRoundRectDrawable;
+import org.licpnz.ui.threads.BitmapLoadingThread;
+import org.licpnz.ui.widget.NewUpdatingView;
 
 /**
  * Created by Ilya on 05.12.2016.
  */
 
-public class NewFragment extends Fragment {
+public class NewFragment extends Fragment implements NewsApi.AsyncNewDetailer {
 
-    LinearLayout mContainer;
+    FrameLayout mContainer;
     LinearLayout mContent;
     TextView mTitleTextView;
     TextView mContentTextView;
@@ -45,15 +57,73 @@ public class NewFragment extends Fragment {
     New mNew;
     Bitmap mPreview;
     NewsAdapter.NewsHolder mRequester;
+    Scene mScene;
+    NewUpdatingView mUpdatingView;
 
+    Handler h = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            try {
+                if (msg.obj instanceof Bitmap) {
+                    ImageView iv = new ImageView(getActivity());
+                    mContent.addView(iv);
+                    iv.setImageBitmap((Bitmap) msg.obj);
+                }
+            }catch(Throwable t){}
+        }
+    };
+
+    public void connectSrc(){
+        if (mNew.mM.mDetailedSrc!=null)
+            for (String s : mNew.mM.mDetailedSrc){
+                if (s.endsWith(".jpg")||s.endsWith(".png"))
+                    if (mNew.mObjects.containsKey("preview href")&&!((String)mNew.mObjects.get("preview href")).equalsIgnoreCase(s)){
+                        if (!mNew.mObjects.containsKey("image "+s)||((int)mNew.mObjects.get("image "+s))!=100){
+                            loadImage(s);
+                        }else if(mNew.mObjects.containsKey("image "+s)&&((int)mNew.mObjects.get("image "+s))==100){
+                            Message m = new Message();
+                            m.obj = (Bitmap) mNew.mObjects.get("bitmap "+s);
+                            h.sendMessage(m);
+                        }
+                    }
+            }
+    }
+
+    @TargetApi(21)
+    @Override
+    public void onUpdateNew(final New n) {
+        h.postDelayed( new Runnable() {
+            public void run() {
+                TransitionManager.beginDelayedTransition(mContent);
+                if (n.mM.mDetailedText != null)
+                    mContentTextView.setText(n.mM.mDetailedText);
+                connectSrc();
+                mUpdatingView.hide();
+            }
+        },0);
+    }
+
+    @TargetApi(21)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContainer = (LinearLayout) getActivity().getLayoutInflater().inflate(org.licpnz.ui.R.layout.new_detailed_layout,null);
+        mContainer = (FrameLayout) getActivity().getLayoutInflater().inflate(org.licpnz.ui.R.layout.new_detailed_layout,null);
+        mScene = new Scene(mContainer);
         mContent = (LinearLayout) mContainer.findViewById(R.id.new_details_container);
         mTitleTextView = (TextView) mContainer.findViewById(org.licpnz.ui.R.id.new_detailed_title_text_view);
         mContentTextView = (TextView) mContainer.findViewById(org.licpnz.ui.R.id.new_detailed_content_text_view);
         mPreviewImage = (ImageView) mContainer.findViewById(R.id.new_preview_detailed_image);
+        mUpdatingView = new NewUpdatingView(getActivity());
+        mUpdatingView.setBackground(new HalfRoundRectDrawable(true, Color.WHITE));
+        mUpdatingView.setElevation(40);
+        mUpdatingView.setTranslationZ(-20);
+
+        FrameLayout.LayoutParams ullp = new FrameLayout.LayoutParams(200,100, Gravity.BOTTOM | Gravity.LEFT);
+        ullp.bottomMargin=200;
+        mUpdatingView.setContainer(mContainer,ullp);
+
+
+
         if (savedInstanceState==null)
             savedInstanceState = getArguments();
         //if (savedInstanceState==null)
@@ -71,6 +141,13 @@ public class NewFragment extends Fragment {
         if (mPreview!=null){
             mPreviewImage.setImageBitmap(mPreview);
         }
+        if (!mNew.isDetailsRequested) {
+            mUpdatingView.show();
+            Api.getApi().getNewsApi().getAsyncDetails(mNew, this);
+        }else
+        if (mNew.mM.mDetailedText != null)
+            mContentTextView.setText(mNew.mM.mDetailedText);
+        connectSrc();
     }
 
     @Override
@@ -80,11 +157,58 @@ public class NewFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return mContainer;
     }
+
+
+
+    public void loadImage(final String url0){
+        new Thread(){
+            public void run(){
+                String url = url0;
+                mNew.mObjects.put("image "+url0,0);
+                if (url.startsWith("/"))
+                    url = url.substring(1,url.length());
+                else
+                    url = url;
+                BitmapLoadingThread blt = null;
+                if (url.startsWith("http"))
+                    blt = new BitmapLoadingThread(url);
+                else
+                    blt = new BitmapLoadingThread(Api.getSiteHost()+url);
+                blt.start();
+                Bitmap b = blt.getBitmap();
+                if (b==null) return;
+                mNew.mObjects.put("bitmap "+url0,b);
+                Message m = new Message();
+                m.obj = b;
+                h.sendMessage(m);
+                mNew.mObjects.put("image "+url0,100);
+            }
+        }.start();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public static void newInstance(NewsListFragment nlf, New n, NewsAdapter.NewsHolder nh){

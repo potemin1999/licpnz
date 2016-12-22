@@ -44,7 +44,8 @@ public class HostChangeDialogFragment extends DialogFragment implements DialogIn
         return new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.settings_dialog_host_change_title))
                 .setView(mContainer)
-                .setPositiveButton("Ok",this)
+                .setPositiveButton("OK",this)
+                .setNeutralButton("Отмена",this)
                 .create();
     }
 }

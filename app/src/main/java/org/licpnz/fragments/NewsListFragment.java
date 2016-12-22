@@ -28,7 +28,14 @@ public class NewsListFragment extends Fragment implements NewsAdapter.Callback {
     public RecyclerView.ItemAnimator mListItemAnimator;
 
     @Override
-    public void onError(int err) {
+    public void onError(final int err) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (err==NewsAdapter.ERROR_NEWS_NOT_RECEIVED)
+                    Toast.makeText(getActivity(),"news not received",Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

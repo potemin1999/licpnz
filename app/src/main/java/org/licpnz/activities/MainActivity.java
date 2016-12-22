@@ -2,6 +2,7 @@ package org.licpnz.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.widget.FrameLayout;
 
 import org.licpnz.R;
@@ -30,9 +31,9 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState==null){
             mNewsListFragment = new NewsListFragment();
-            mNewsListFragment.setRetainInstance(false);
+            mNewsListFragment.setRetainInstance(true);
             mMenuFragment = new MenuFragment();
-            mMenuFragment.setRetainInstance(false);
+            mMenuFragment.setRetainInstance(true);
             getFragmentManager().beginTransaction()
                     .add(R.id.main_fragment_container,mNewsListFragment,mNewsListFragmentTag)
                     .add(R.id.drawer_frame,mMenuFragment,mMenuFragmentTag)

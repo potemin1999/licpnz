@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="?android:attr/colorBackground">
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,7 +28,7 @@
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/settings_toolbar"
         android:elevation="@dimen/app_bar_elevation"
-        app:logo="@mipmap/ic_launcher"
+        app:logo="@drawable/ic_settings_white_48dp"
         android:longClickable="true"
         android:contextClickable="true"
         android:fitsSystemWindows="false"

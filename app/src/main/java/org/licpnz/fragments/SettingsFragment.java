@@ -1,6 +1,7 @@
 package org.licpnz.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import org.licpnz.R;
 import org.licpnz.activities.SettingsActivity;
 import org.licpnz.settings.ConnectionSettingsFragment;
+import org.licpnz.settings.NewsSettingsFragment;
 
 import java.util.ArrayList;
 
@@ -44,9 +46,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         mList.setLayoutManager(mLM);
         mList.setItemAnimator(new DefaultItemAnimator());
         mList.setAdapter(mAdapter);
-        addSetting(2,getResources().getDrawable(R.mipmap.ic_launcher),"Connection ",null);
-        addSetting(0,getResources().getDrawable(R.mipmap.ic_launcher),getString(R.string.settings_category_news),null);
-        addSetting(1,getResources().getDrawable(R.mipmap.ic_launcher),getString(R.string.settings_category_about),null);
+        addSetting(0,getResources().getDrawable(R.drawable.ic_storage_black_24dp),"Connection ",null);
+        addSetting(1,getResources().getDrawable(R.drawable.ic_receipt_black_24dp),getString(R.string.settings_category_news),null);
+        addSetting(2,getResources().getDrawable(R.drawable.ic_info_outline_black_24dp),getString(R.string.settings_category_about),null);
     }
 
     @Nullable
@@ -70,13 +72,32 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case 0:{
                 getActivity().getFragmentManager().beginTransaction()
-                        .replace(SettingsActivity.mContainerId,new ConnectionSettingsFragment(),"ConnectionSettings")
+                        .add(SettingsActivity.mContainerId,new ConnectionSettingsFragment(),"ConnectionSettings")
+                        .setCustomAnimations(R.animator.settings_fragment_in,R.animator.settings_fragment_in)
+                        .setCustomAnimations(R.animator.settings_fragment_in,R.animator.settings_fragment_in,R.animator.settings_fragment_in,R.animator.settings_fragment_in)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .addToBackStack("ConnectionSettingsBackStack")
                         .commit();
                 break;
             }
             case 1:{
-
+                getActivity().getFragmentManager().beginTransaction()
+                        .add(SettingsActivity.mContainerId,new NewsSettingsFragment(),"NewsSettings")
+                        .setCustomAnimations(R.animator.settings_fragment_in,R.animator.settings_fragment_in)
+                        .setCustomAnimations(R.animator.settings_fragment_in,R.animator.settings_fragment_in,R.animator.settings_fragment_in,R.animator.settings_fragment_in)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .addToBackStack("NewsSettingsBackStack")
+                        .commit();
+                break;
+            }
+            case 2:{
+                getActivity().getFragmentManager().beginTransaction()
+                        .add(SettingsActivity.mContainerId,new AboutFragment(),"AboutFragment")
+                        .setCustomAnimations(R.animator.settings_fragment_in,R.animator.settings_fragment_in)
+                        .setCustomAnimations(R.animator.settings_fragment_in,R.animator.settings_fragment_in,R.animator.settings_fragment_in,R.animator.settings_fragment_in)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .addToBackStack("AboutFragmentBackStack")
+                        .commit();
                 break;
             }
         }
@@ -98,7 +119,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         public void onBindViewHolder(SettingHolder holder, int position) {
             Setting s = mSettings.get(position);
             holder.mTitle.setText(s.mTitle);
-            holder.mContainer.setId(position);
+            holder.mContainer.setId(s.mId);
             if (s.mIcon!=null)
                 holder.mImage.setImageDrawable(s.mIcon);
             else
